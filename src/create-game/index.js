@@ -1,0 +1,1 @@
+export { CreateGame as default } from './create-game';
