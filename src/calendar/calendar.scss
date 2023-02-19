@@ -5,75 +5,75 @@ $grid-color: #ddd;
     flex-direction: column;
     width: 100%;
     height: 100vh;
-}
 
-.month-header {
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-    Button {
+    .month-header {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        margin-bottom: 1rem;
         font-size: 2rem;
-    }
-}
-
-.month {
-    text-align: center;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid $grid-color;
-}
-
-.week {
-    &:not(:last-child) {
-        border-bottom: 1px solid $grid-color;
-    }
-
-    &.header {
-        flex: 0;
-        > .day {
-            padding: 2px 0;
+        Button {
+            font-size: 2rem;
         }
     }
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-}
-
-.day {
-    &:not(:last-child) {
-        border-right: 1px solid $grid-color;
-    }
-    &.day-0 {
-        .day-header,
-        .date {
-            color: #ff0000;
-        }
-    }
-    &.day-6 {
-        .day-header,
-        .date {
-            color: #0000ff;
-        }
-    }
-    .date {
-        font-size: 2rem;
+    
+    .month {
+        text-align: center;
         flex: 1;
-    }
-    &.prev-month,
-    &.next-month {
-        .wrapper {
-            opacity: 20%;
-        }
-    }
-    .wrapper {
         display: flex;
         flex-direction: column;
-        cursor: pointer;
-        height: 100%;
+        border: 1px solid $grid-color;
     }
-    padding: 10px 0;
-    color: #444;
+    
+    .week {
+        &:not(:last-child) {
+            border-bottom: 1px solid $grid-color;
+        }
+    
+        &.header {
+            flex: 0;
+            > .day {
+                padding: 2px 0;
+            }
+        }
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+    }
+    
+    .day {
+        &:not(:last-child) {
+            border-right: 1px solid $grid-color;
+        }
+        &.day-0 {
+            .day-header,
+            .date {
+                color: #ff0000;
+            }
+        }
+        &.day-6 {
+            .day-header,
+            .date {
+                color: #0000ff;
+            }
+        }
+        .date {
+            font-size: 2rem;
+            flex: 1;
+        }
+        &.prev-month,
+        &.next-month {
+            .wrapper {
+                opacity: 20%;
+            }
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            height: 100%;
+        }
+        padding: 10px 0;
+        color: #444;
+    }
 }

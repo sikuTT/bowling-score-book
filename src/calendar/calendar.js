@@ -65,9 +65,8 @@ export function Calendar(props) {
 
   // カレンダーに6週表示する
   let d = date.day(0);
-  console.log(date, d);
   const header = (
-    <div className='week header'>
+    <div key='header' className='week header'>
       {
         ['日', '月', '火', '水', '木', '金', '土'].map((value, i) => (
           <div key={i} className={`day day-${i}`}><div className='day-header'>{value}</div></div>
@@ -82,15 +81,13 @@ const weeks = [];
     weeks.push(week(d));
     d = d.add(1, 'week');
   }
-  
+
   return (
-    <>
-      <div className='calendar'>
-        { monthHeader() }
-        <div className='month'>
-          { weeks }
-        </div>
+    <div className='calendar'>
+      { monthHeader() }
+      <div className='month'>
+        { weeks }
       </div>
-    </>
+    </div>
   );
 }
