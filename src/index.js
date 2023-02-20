@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Calendar from './calendar';
 import CreateGame from './create-game';
+import ScoreEdit from './score-edit';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: "/create-game/:year/:month/:day",
     element: (<CreateGame/>),
+  },
+  {
+    path: "/score-edit",
+    element: (<ScoreEdit/>),
   },
 ]);
 

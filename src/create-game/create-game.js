@@ -1,10 +1,11 @@
 import { Autocomplete, Button, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { Stack } from '@mui/system';
 import React, { useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import './create-game.scss';
 
 export function CreateGame(props) {
+  const navigate = useNavigate();
   let {year, month, day} = useParams();
   const [eventType, setEventType] = useState('other');
   const [eventName, setEventName] = useState('');
@@ -16,6 +17,15 @@ export function CreateGame(props) {
   const eventNameChange = (e) => {
     console.log('🔶 eventNameChange', e.target.value);
   };
+
+  const cancelClick = () => {
+    navigate(-1);
+  };
+  
+  const createClick = () => {
+    navigate('/score-edit');
+  };
+  
   return (
     <div className='create-game'>
       <Stack>
@@ -46,8 +56,8 @@ export function CreateGame(props) {
           <TextField label="シーズン"></TextField>
         </div>
         <div className="buttons">
-          <Button>キャンセル</Button>
-          <Button color='primary' variant="contained">作成</Button>
+          <Button onClick={cancelClick}>キャンセル</Button>
+          <Button onClick={createClick} color='primary' variant="contained">作成</Button>
         </div>
       </Stack>
     </div>

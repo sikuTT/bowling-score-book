@@ -1,0 +1,1 @@
+export { ScoreEdit as default } from './score-edit';
