@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import './calendar.scss';
 import { useNavigate } from 'react-router';
+import { ISummary, SummaryService } from './summary.service';
 
-export function Calendar(props) {
+export function Calendar() {
   const navigate = useNavigate();
-  const first = dayjs().date(1);
+  const first = dayjs().date(1).minute(0).second(0).millisecond(0);
   const [date, setDate] = useState(first);
+  const [summary, setSummary] = useState<ISummary[]>([]);
+
+  useEffect(() => {
+    // 表示している月の成績を取得
+    const fetchData = async () => {
+      const summary = await SummaryService.get(date.day(0), date.day(0).add(7*6-1, 'day'));
+      setSummary(summary);
+    };
+    fetchData();
+  }, [date]);
 
   function onPrevMonthClick() {
     setDate(date.add(-1, 'month'));
@@ -19,7 +30,7 @@ export function Calendar(props) {
     setDate(date.add(1, 'month'));
   }
 
-  function onDateClick(date) {
+  function onDateClick(date: dayjs.Dayjs) {
     navigate(`/create-game/${date.year()}/${date.month() + 1}/${date.date()}`);
   }
 
@@ -33,22 +44,24 @@ export function Calendar(props) {
     );
   }
 
-  function day(d) {
+  function day(d: dayjs.Dayjs) {
     let className = `day day-${d.day()}`;
     className += d.month() < date.month() ? ' prev-month' : '';
     className += d.month() > date.month() ? ' next-month' : '';
+    const data = summary.find(value => value.date === d.format('YYYY-MM-DD'));
+    
     return (
       <div key={d.format('YYYY-MM-DD')} className={className} onClick={() => onDateClick(d)}>
         <div className='wrapper'>
           <div className='date'>{d.date()}</div>
-          <div className='game'>3 games</div>
-          <div className='average'>av. 217.42</div>
+          {data && <div className='game'>{data.game} games</div>}
+          {data && <div className='average'>av. {data.average}</div>}
         </div>
       </div>
     );
   }
 
-  function week(date) {
+  function week(date: dayjs.Dayjs) {
     // 1週間分の日付を表示
     const days = [];
     for (let i = 0; i < 7; i++) {
@@ -63,14 +76,6 @@ export function Calendar(props) {
     );
   }
 
-  const queryParams = new URLSearchParams({
-    start: date.day(0).format('YYYY-MM-DD'),
-    end: date.add(42, 'day').format('YYYY-MM-DD'),
-  });
-  fetch('/api/summary?' + queryParams).then(res => res.json()).then(res => {
-    console.log(res);
-  });
-
   // カレンダーに6週表示する
   let d = date.day(0);
   const header = (
@@ -83,7 +88,8 @@ export function Calendar(props) {
     </div>
   );
 
-const weeks = [];
+  // 6週分の要素を作成
+  const weeks: JSX.Element[] = [];
   weeks.push(header);
   for (let i = 0; i < 6; i++) {
     weeks.push(week(d));

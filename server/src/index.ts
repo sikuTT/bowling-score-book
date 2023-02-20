@@ -1,7 +1,12 @@
-const express = require("express");
+import express from 'express';
+import { env } from 'process';
+
+const port = env.PORT !== undefined ? parseInt(env.PORT) : 3000;
+
 const app = express();
 
-const port = process.env['PORT'] | 3000;
+app.use(express.urlencoded());
+app.use(express.json());
 
 app.use((req, res, next) => {
   const now = new Date();
@@ -23,7 +28,7 @@ app.get('/api/summary', (req, res) => {
   }]);
 });
 
-app.use(express.static('public'));
+app.use(express.static('dist'));
 
 const server = app.listen(port, () => {
   console.log(`express server is listening on port ${port}`);
