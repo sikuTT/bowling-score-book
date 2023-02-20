@@ -63,6 +63,14 @@ export function Calendar(props) {
     );
   }
 
+  const queryParams = new URLSearchParams({
+    start: date.day(0).format('YYYY-MM-DD'),
+    end: date.add(42, 'day').format('YYYY-MM-DD'),
+  });
+  fetch('/api/summary?' + queryParams).then(res => res.json()).then(res => {
+    console.log(res);
+  });
+
   // カレンダーに6週表示する
   let d = date.day(0);
   const header = (
