@@ -2,28 +2,28 @@ import { Autocomplete, Button, TextField, ToggleButton, ToggleButtonGroup } from
 import { Stack } from '@mui/system';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { ScoreService } from '../score.service';
 import './create-game.scss';
 
 export function CreateGame(props) {
   const navigate = useNavigate();
   let {year, month, day} = useParams();
-  const [eventType, setEventType] = useState('other');
+  const [eventType, setEventType] = useState('Other');
+  const [bowlingAlleyName, setBowlingAlleyName] = useState('');
   const [eventName, setEventName] = useState('');
+  const [season, setSeason] = useState('');
 
   const eventTypeChange = (e, newEventType) => setEventType(newEventType);
-  const bowlingAlleyChange = (e) => {
-    console.log('🔶 bowlingAlleyChange', e.target.value);
-  };
-  const eventNameChange = (e) => {
-    console.log('🔶 eventNameChange', e.target.value);
-  };
+  const bowlingAlleyChange = (e) => setBowlingAlleyName(e.target.value);
+  const eventNameChange = (e) => setEventName(e.target.value);
+  const seasonChange = (e) => setSeason(e.target.value);
 
   const cancelClick = () => {
     navigate(-1);
   };
   
   const createClick = () => {
-    navigate('/score-edit');
+    ScoreService.createEvent(eventType, bowlingAlleyName, eventName, season).then(() => navigate('/score-edit'));
   };
   
   return (
@@ -32,10 +32,10 @@ export function CreateGame(props) {
         <div className='date'>{year}/{month}/{day}</div>
         <div className='event-type'>
           <ToggleButtonGroup exclusive value={eventType} onChange={eventTypeChange}>
-            <ToggleButton value='tournament'>トーナメント</ToggleButton>
-            <ToggleButton value='league'>リーグ</ToggleButton>
-            <ToggleButton value='practice'>練習</ToggleButton>
-            <ToggleButton value='other'>その他</ToggleButton>
+            <ToggleButton value='Tournament'>トーナメント</ToggleButton>
+            <ToggleButton value='League'>リーグ</ToggleButton>
+            <ToggleButton value='Practice'>練習</ToggleButton>
+            <ToggleButton value='Other'>その他</ToggleButton>
           </ToggleButtonGroup>
         </div>
         <div className='bowling-alley'>
@@ -53,7 +53,11 @@ export function CreateGame(props) {
           </Autocomplete>
         </div>
         <div className='season'>
-          <TextField label="シーズン"></TextField>
+          <Autocomplete
+            freeSolo options={seasons}
+            renderInput={params => <TextField {...params} label="シーズン" onBlur={seasonChange} />}
+          >
+          </Autocomplete>
         </div>
         <div className="buttons">
           <Button onClick={cancelClick}>キャンセル</Button>
@@ -66,3 +70,4 @@ export function CreateGame(props) {
 
 const bowlingAlleys = [ 'あああ', 'いいい'];
 const eventNames = [ 'あああ', 'いいい'];
+const seasons = [ 'あああ', 'いいい'];

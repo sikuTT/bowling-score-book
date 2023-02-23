@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { Button } from '@mui/material'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import dayjs from 'dayjs';
 import './calendar.scss';
-import { useNavigate } from 'react-router';
-import { ISummary, SummaryService } from './summary.service';
+import { ScoreService } from '../score.service';
+import { ISummary } from '../model/score.model';
 
 export function Calendar() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export function Calendar() {
   useEffect(() => {
     // 表示している月の成績を取得
     const fetchData = async () => {
-      const summary = await SummaryService.get(date.day(0), date.day(0).add(7*6-1, 'day'));
+      const summary = await ScoreService.getSummary(date.day(0), date.day(0).add(7*6-1, 'day'));
       setSummary(summary);
     };
     fetchData();
